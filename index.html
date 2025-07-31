@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Portfolio Centralnyce</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+  body, html {
+    margin: 0; padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #2f2f2f;
+    color: #eee;
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  #discord-side {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    background-color: #3a3a3a;
+    padding: 1rem 0.75rem;
+    border-radius: 8px 0 0 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    user-select: none;
+    z-index: 20;
+  }
+
+  #discord-side img {
+    width: 40px;
+    filter: drop-shadow(0 0 2px #cc3333);
+  }
+
+  #discord-side span {
+    color: #cc3333;
+    font-weight: 700;
+    font-size: 1.1rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    cursor: default;
+  }
+
+  nav {
+    background-color: #3a3a3a;
+    padding: 1rem 0;
+    user-select: none;
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+
+  nav button {
+    background-color: transparent;
+    border: none;
+    color: #cc3333;
+    font-size: 1.3rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+    border-radius: 8px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  nav button:hover, nav button.active {
+    background-color: #cc3333;
+    color: #222;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 4rem auto 6rem;
+    padding: 0 1rem;
+    opacity: 0;
+    filter: blur(10px);
+    pointer-events: none;
+    transition: opacity 0.6s ease, filter 0.6s ease;
+    position: relative;
+    z-index: 10;
+  }
+
+  .page.active {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+  }
+
+  h1, h2 {
+    color: #cc3333;
+  }
+
+  #welcome-screen {
+    background-color: #2f2f2f;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    opacity: 1;
+    filter: blur(0);
+    transition: opacity 0.8s ease, filter 0.8s ease;
+    position: relative;
+    z-index: 30;
+  }
+
+  #welcome-screen.hidden {
+    opacity: 0;
+    filter: blur(10px);
+    pointer-events: none;
+  }
+
+  #welcome-screen button {
+    background-color: #cc3333;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 700;
+    padding: 1.2rem 4rem;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #cc3333aa;
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+
+  #welcome-screen button:hover {
+    background-color: #ff4d4d;
+    box-shadow: 0 0 25px #ff4d4dcc;
+  }
+
+  .drop {
+    position: fixed;
+    width: 12px;
+    height: 18px;
+    background: radial-gradient(circle at center, #cc3333 60%, transparent 100%);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    opacity: 0.8;
+    animation-name: fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(-30px);
+      opacity: 0.8;
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(110vh);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 600px) {
+    nav {
+      gap: 1.5rem;
+      padding: 0.8rem 0;
+    }
+    nav button {
+      font-size: 1rem;
+      padding: 0.4rem 1rem;
+    }
+    #discord-side {
+      display: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="welcome-screen">
+  <button id="enter-btn">Wejdź</button>
+</div>
+
+<nav id="nav-bar" style="display:none;">
+  <button id="btn-about" class="active">O mnie</button>
+  <button id="btn-projects">Projekty</button>
+</nav>
+
+<div id="discord-side" title="Mój Discord" style="display:none;">
+  <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord logo" />
+  <span>centralnyce</span>
+</div>
+
+<div id="about" class="page">
+  <h1>O mnie</h1>
+  <p>Cześć! Jestem Karol i tworzę portfolio oraz różne projekty webowe. Lubię prostotę, dobre rozwiązania i dopieszczony kod.</p>
+</div>
+
+<div id="projects" class="page">
+  <h2>Projekty</h2>
+  <ul>
+    <li><strong>Ta strona</strong> – moja pierwsza realizacja portfolio z efektem spadających kropli krwi.</li>
+    <li>Projekt 2 – opis i link</li>
+    <li>Projekt 3 – opis i link</li>
+  </ul>
+</div>
+
+<script>
+  const enterBtn = document.getElementById('enter-btn');
+  const welcomeScreen = document.getElementById('welcome-screen');
+  const navBar = document.getElementById('nav-bar');
+  const discordSide = document.getElementById('discord-side');
+
+  const aboutPage = document.getElementById('about');
+  const projectsPage = document.getElementById('projects');
+
+  const btnAbout = document.getElementById('btn-about');
+  const btnProjects = document.getElementById('btn-projects');
+
+  function showPage(page) {
+    if (page === 'about') {
+      aboutPage.classList.add('active');
+      projectsPage.classList.remove('active');
+      btnAbout.classList.add('active');
+      btnProjects.classList.remove('active');
+      stopDrops();
+    } else if (page === 'projects') {
+      projectsPage.classList.add('active');
+      aboutPage.classList.remove('active');
+      btnProjects.classList.add('active');
+      btnAbout.classList.remove('active');
+      startDrops();
+    }
+  }
+
+  enterBtn.addEventListener('click', () => {
+    welcomeScreen.classList.add('hidden');
+    setTimeout(() => {
+      welcomeScreen.style.display = 'none';
+      navBar.style.display = 'flex';
+      discordSide.style.display = 'flex';
+      showPage('about');
+    }, 800);
+  });
+
+  btnAbout.addEventListener('click', () => {
+    showPage('about');
+  });
+
+  btnProjects.addEventListener('click', () => {
+    showPage('projects');
+  });
+
+  let dropsInterval;
+
+  function createDrop() {
+    const drop = document.createElement('div');
+    drop.classList.add('drop');
+    drop.style.left = Math.random() * window.innerWidth + 'px';
+    drop.style.animationDuration = (3 + Math.random() * 3) + 's';
+    drop.style.animationDelay = '0s';
+    document.body.appendChild(drop);
+
+    drop.addEventListener('animationend', () => {
+      drop.remove();
+    });
+  }
+
+  function startDrops() {
+    if (dropsInterval) return;
+    dropsInterval = setInterval(createDrop, 300);
+  }
+
+  function stopDrops() {
+    clearInterval(dropsInterval);
+    dropsInterval = null;
+    document.querySelectorAll('.drop').forEach(d => d.remove());
+  }
+</script>
+
+</body>
+</html>
